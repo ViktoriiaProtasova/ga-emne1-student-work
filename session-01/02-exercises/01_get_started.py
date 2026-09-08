@@ -4,13 +4,14 @@ print("Hello World!")
 
 #%% # 2. Personlig hilsen
 
-first_name = "Viktoriia"
+my_name = "Viktoriia"
 favorite_language = "Python"
-print("Hello,",first_name +"!", "Your favorite language is", favorite_language +"!")
+print("Hello,",my_name +"!", "Your favorite language is", favorite_language +"!")
 
 
 #%% # 3. Navnehilsen med input
 
+# noinspection DuplicatedCode
 first_name = input("Enter your first name: ")
 last_name = input("Enter your last name: ")
 full_name = first_name + " " + last_name + "!"
