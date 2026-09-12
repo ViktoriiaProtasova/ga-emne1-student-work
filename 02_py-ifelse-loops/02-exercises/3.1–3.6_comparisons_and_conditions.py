@@ -1,5 +1,4 @@
 #%% Oppgave 3.1: Sammenlign med 10
-from math import remainder
 
 number = round(float(input("Enter integer: ")))
 print(f"Integer is: {number}")
