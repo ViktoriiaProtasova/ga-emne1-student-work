@@ -1,3 +1,4 @@
+# Oppgave 1 – Grunnleggende programflyt
 
 ## Oppgave 1.1 – Beregn tidsbruk
 
@@ -5,8 +6,6 @@
 
 KI (ChatGPT) er brukt som hjelpemiddel i arbeidet. Nedenfor dokumenteres
 forespørsler og svar som helt eller delvis har påvirket løsningen.
-
-
 
 **Prompt 1**
 
@@ -86,8 +85,64 @@ print(f"Total time spent: {hours} hours and {minutes} minutes")
 
 Jeg brukte forslaget om å konvertere input til `int` direkte inne i `try`-blokken. Dette fjernet type-varselet i PyCharm og gjorde koden kortere.
 Jeg fjernet også `continue` helt nederst i løkken.
-## Oppgave 3 – Funksjoner og dokumentasjon
-### Testtilfeller
+
+
+
+
+# Oppgave 2 – Datastrukturer og behandling av data
+
+## Datastruktur
+
+Studieøktene lagres i en liste (`study_sessions`), der hver økt er et **dict** med tre felt: `topic` (tekst), `duration_minutes` (positivt heltall) og `status` (`planned` eller `completed`).
+
+Jeg valgte `dict` i stedet for `tuple` fordi feltene har navn (`session["topic"]`, `session["duration_minutes"]`), noe som gjør koden lettere å lese enn å huske posisjonen til hvert felt i en tuple (`session[0]`, `session[1]`). Det gjør det også enklere å legge til flere felt senere uten å endre alle steder i koden der data leses.
+
+## Funksjonalitet
+
+Programmet viser en meny med sju valg: registrere en økt, vise alle økter, vise kun fullførte økter, søke etter tema, sortere etter varighet, vise samlet/gjennomsnittlig varighet for fullførte økter, og avslutte. Ugyldig inndata (tomt tema, negativ eller ikke-numerisk varighet, ugyldig status, ugyldig menyvalg) gir en forklarende feilmelding, og brukeren kan prøve på nytt.
+
+## Testing
+
+Programmet er testet manuelt for hvert menyvalg, inkludert både gyldige verdier og typiske feilsituasjoner (tomt tema, negativ varighet, tekst i stedet for tall, ugyldig status, søk uten treff, ugyldig menyvalg).
+
+
+## Bruk av kunstig intelligens (KI)
+
+Jeg brukte Claude (Anthropic) for å forstå oppgavekravene og få hjelp med konkrete kodeproblemer. Jeg skrev koden selv og testet alle forslagene ved å kjøre programmet.
+
+### Spørsmål og svar (oversatt fra ukrainsk, kort oppsummert)
+
+**1. "Hvordan legger jeg til en ny nøkkel og verdi i et dict i Python?"**
+Svar: Bruk hakeparentes, f.eks. `session["status"] = "planned"`. Dette la grunnlaget for hvordan jeg registrerer nye studieøkter i listen.
+
+**2. "Hvorfor får jeg feilmelding når jeg prøver `sorted(study_sessions)` direkte?"**
+Svar: `sorted()` vet ikke hvilket felt i dict-et den skal sortere etter. Løsningen er å bruke parameteren `key` med en `lambda`-funksjon, f.eks. `key=lambda session: session["duration_minutes"]`. Dette avgjorde hvordan sorteringsdelen (menyvalg 5) ble skrevet.
+
+**3. "Hvordan kan jeg sjekke om en del av et ord finnes i temaet til øktene i listen?"**
+Svar: Bruk `in` for å sjekke om søketeksten er en del av `session["topic"]`, f.eks. `if search_text in session["topic"]`. Dette avgjorde hvordan søkefunksjonen (menyvalg 4) ble bygget opp, slik at brukeren finner treff selv om bare en del av temaet skrives inn.
+
+**4. "Kan jeg normalisere (gjøre om til små bokstaver) et tema jeg henter fra listen, for søk som ikke skiller mellom store og små bokstaver?"**
+Svar: Bruk `.lower()` på begge sider av sammenligningen, kun ved selve sammenligningen – ikke lagre om selve dataene. Dette gjorde at søket fungerer uansett om brukeren skriver med store eller små bokstaver.
+
+**5. "Kan jeg skrive treffene fra søket til en vanlig liste med en `for`-løkke og `.append()`?"**
+Svar: Ja, det gjøres ved å opprette en tom liste før løkken, og legge til (`.append()`) hver økt som matcher søket inne i løkken. Etter løkken viser jeg en feilmelding hvis listen er tom, og resultatene hvis den ikke er det. Denne fremgangsmåten brukte jeg til å bygge søkefunksjonen (menyvalg 4).
+
+**6. "Hvordan sorterer jeg listen slik at den lengste økten vises først?"**
+Svar: Legg til parameteren `reverse=True` i `sorted()`, f.eks. `sorted(study_sessions, key=lambda session: session["duration_minutes"], reverse=True)`. Dette avgjorde hvordan jeg fikk økten med lengst varighet til å vises øverst, slik oppgaven krevde.
+
+### Hva KI hjalp med
+
+- Forklarte hvorfor `sorted()` krever `key` for å sortere en liste med dict.
+- Viste hvordan `reverse=True` sorterer listen i synkende rekkefølge, slik at lengste økt vises først.
+- Forklarte hvordan `in` kan brukes for å finne treff når bare en del av temaet skrives inn, og hvorfor `.lower()` må brukes på begge sider ved søk uten hensyn til store/små bokstaver.
+- Viste hvordan søketreff kan samles i en liste med en vanlig `for`-løkke og `.append()`, som jeg valgte å bruke i den endelige koden.
+
+
+
+
+
+# Oppgave 3 – Funksjoner og dokumentasjon
+## Testtilfeller
 
 ### Gyldige testtilfeller
 
