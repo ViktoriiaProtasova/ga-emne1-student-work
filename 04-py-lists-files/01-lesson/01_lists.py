@@ -5,18 +5,16 @@ print("\n---\n")
 mixed_bag = ["Tomas" , 52, True]
 print(mixed_bag)
 
-
-
 print(guests[0])
 print(guests[1])
 print(guests[-1])
 
 guests.append("Animal")
 guests.remove("Kermit")
+guests.insert(1, "Gonzo")
+
 print(guests)
 print(len(guests))
-
-guests.insert(1, "Gonzo")
 
 print("\n---\n")
 

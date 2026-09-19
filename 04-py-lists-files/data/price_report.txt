@@ -1,0 +1,7 @@
+Item: Apple
+Amount: $10
+Price: $3.00
+Kommentar: Husk blåbær og grøt!
+Count: 4
+Total: 464
+Average: 116

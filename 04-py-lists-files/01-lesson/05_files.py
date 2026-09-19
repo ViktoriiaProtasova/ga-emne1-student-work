@@ -9,6 +9,7 @@ print(f"Data directory is {data_directory}")
 prices_path = data_directory / "prices.txt"
 
 print(data_directory)
+print(prices_path)
 print(data_directory.exists())
 
 print(f"Prices file path is {prices_path}")
@@ -43,14 +44,15 @@ with open(report_path, "a", encoding="utf-8") as file:
     file.write("Another line\n")
 
 report_lines = [
-    "Item: Epler",
+    "Item: Apple",
     "Amount: $10",
     "Price: $3.00"
 ]
 
+with open(report_path, "w", encoding="utf-8") as file:
+    for line in report_lines:
+        file.write(line + "\n")
+
+
 with open(report_path, "a", encoding="utf-8") as file:
-       file.write("Husk bløbær og grøt\n")
-
-
-
-
+    file.write("Kommentar: Husk blåbær og grøt!\n")
