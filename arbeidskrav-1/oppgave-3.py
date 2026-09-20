@@ -48,11 +48,10 @@ def get_duration():
 
 def show_the_date(date):
     try:
-       date = date.strftime("%d.%m.%Y")
-       return date
+        date = date.strftime("%d.%m.%Y")
+        return date
     except ValueError:
         print("Invalid date. Please try again.")
-
 
 
 def show_end_time(start_time, duration):
@@ -70,7 +69,6 @@ def show_difference():
         return f"There are {difference} day between {date_1} and {date_2}."
     else:
         return f"There are {difference} days between {date_1} and {date_2}."
-
 
 
 def show_sorted_dates(list_of_dates):
@@ -114,11 +112,3 @@ def plan_study_session():
 
 
 plan_study_session()
-
-
-
-
-
-
-
-

@@ -17,8 +17,10 @@ while True:
           "7. Exit")
 
     option = input("Choose an option (1-7): ")
+    print("___\n")
 
     if option == "7":
+        print("___\n")
         print("Goodbye!")
         break
 
@@ -27,6 +29,7 @@ while True:
         while True:
             topic = input("Enter topic: ").strip()
             if topic == "":
+                print("___\n")
                 print("Invalid topic. Try again.")
             else:
                 break
@@ -36,15 +39,18 @@ while True:
                 duration_minutes = abs(int(input("Enter duration in minutes: ")))
                 break
             except ValueError:
+                print("___\n")
                 print("Invalid duration. Try again.")
 
         while True:
             status = input("Enter status (planned/completed): ").strip().lower()
             if status not in ("planned", "completed"):
+                print("___\n")
                 print("Invalid status. Try again.")
             else:
                 break
 
+        print("___\n")
         new_session = {
             "topic": topic,
             "duration_minutes": duration_minutes,
@@ -86,8 +92,10 @@ while True:
                 found_sessions.append(session)
 
         if not found_sessions:
+            print("___\n")
             print(f"Word '{search_word}' not found.")
         else:
+            print("___\n")
             print(f"== Word '{search_word}' found in the topic ==")
 
             for session in found_sessions:
@@ -110,19 +118,23 @@ while True:
 
         for session in study_sessions:
             if not study_sessions:
-                print("No sessions yet.")
+                print("No sessions yet.\n")
+
             elif session['status'] == "completed":
                     total += session["duration_minutes"]
                     count += 1
-            else:
-                print("No completed sessions yet.")
+        if count > 0:
+            print("== Total and average duration for completed sessions ==")
+            print(f"Total: {total} minutes")
+            print(f"Average: {total / count:.1f} minutes\n")
+        else:
+            print("No completed sessions yet.\n")
 
-        print("== Total and average duration for completed sessions ==")
-        print(f"Total: {total} minutes")
-        print(f"Average: {total / count:.1f} minutes\n")
+
 
     else:
-        print("Invalid option. Try again.")
+        print("Invalid option. Try again.\n")
+
 
 
 
