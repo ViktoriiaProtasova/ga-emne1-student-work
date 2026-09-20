@@ -95,7 +95,7 @@ Jeg fjernet også `continue` helt nederst i løkken.
 
 Studieøktene lagres i en liste (`study_sessions`), der hver økt er et **dict** med tre felt: `topic` (tekst), `duration_minutes` (positivt heltall) og `status` (`planned` eller `completed`).
 
-Jeg valgte `dict` i stedet for `tuple` fordi feltene har navn (`session["topic"]`, `session["duration_minutes"]`), noe som gjør koden lettere å lese enn å huske posisjonen til hvert felt i en tuple (`session[0]`, `session[1]`). Det gjør det også enklere å legge til flere felt senere uten å endre alle steder i koden der data leses.
+Jeg valgte `dict` i stedet for `tuple` fordi feltene har navn (`session["topic"]`, `session["duration_minutes"]`), noe som gjør koden lettere å lese enn å huske posisjonen til hvert felt i en tuple (`session[0]`, `session[1]`). En `tuple` er uforanderlig (immutable) – man kan ikke endre en verdi inne i en tuple etter at den er opprettet. Selv om dette ikke er nødvendig i den nåværende versjonen av programmet, valgte jeg `dict` for at koden skal være lettere å lese og for at strukturen skal være fleksibel hvis programmet senere skal utvides til å endre felt i en eksisterende økt.
 
 ## Funksjonalitet
 
@@ -201,3 +201,59 @@ Svar: En kort seksjon på norsk med spørsmålene mine (oversatt fra ukrainsk), 
 - Foreslo å bruke `datetime`, `sorted()` og å dele opp funksjonene etter ansvar.
 - Laget et utkast til testtabellen, som jeg kontrollerte ved å kjøre programmet.
 - Hjalp med å skrive, oversette til norsk og formatere README.md.
+
+
+
+
+# Oppgave 4 – Les, analyser og håndter CSV-data
+
+## Oppgave 4.1 – Les og kontroller data
+
+Jeg brukte `csv.DictReader` for å lese `supporthenvendelser.csv` rad for rad. Filen åpnes med UTF-8-koding og `with open()` slik at filen lukkes automatisk etter bruk.
+
+Jeg kontrollerte at alle feltene har en verdi, at `id` er et positivt heltall, at `minutes` er et heltall på null eller mer, og at `is_resolved` er enten `yes` eller `no`.
+
+Ugyldige rader hoppes over med `continue`, og en feilmelding med radnummer og problemet vises i terminalen. Jeg brukte `try/except` for `FileNotFoundError` og `ValueError` ved konvertering til heltall.
+
+## Oppgave 4.2 – Analyser data
+
+Jeg brukte bare de gyldige radene til analysen. Programmet beregner:
+
+* antall gyldige henvendelser
+* antall henvendelser i hver kategori
+* samlet og gjennomsnittlig tidsbruk
+* antall løste og uløste henvendelser
+* kategorien med flest henvendelser
+* uløste henvendelser sortert etter tidsbruk, med den mest tidkrevende først
+
+Gjennomsnittlig tid vises med én desimal.
+
+## Oppgave 4.3 – Skriv rapport
+
+Programmet oppretter `support-rapport.txt` eller overskriver filen hvis den allerede finnes. Rapporten inneholder resultatene fra analysen med tydelige overskrifter.
+
+Feilmeldinger for ugyldige CSV-rader vises bare i terminalen og skrives ikke til rapporten.
+
+## Oppgave 4.4 – Finn og rett feil
+
+Jeg fant og rettet fire feil i funksjonen.
+
+1. Jeg endret `=` til `==`. Ett likhetstegn brukes for å tilordne en verdi, mens to likhetstegn brukes for å sammenligne verdier.
+
+2. Jeg endret `total = request["minutes"]` til `total += request["minutes"]`. Den første koden erstattet `total` for hver iterasjon. Jeg måtte legge til minuttene fra hver løste henvendelse for å få den totale tiden.
+
+3. Jeg endret `return total_minutes` til `return total`, fordi `total_minutes` ikke var definert i funksjonen.
+
+4. Jeg endret funksjonskallet til `sum_resolved_minutes(valid_requests)`, fordi funksjonen trenger listen med gyldige henvendelser som argument.
+
+Etter endringene fungerer funksjonen og returnerer total tid for løste henvendelser.
+
+## Bruk av kunstig intelligens
+
+Jeg brukte ChatGPT som støtte under arbeidet. Følgende forklaringer fra AI påvirket løsningen min:
+
+* Jeg fikk forklart hvordan `csv.DictReader` fungerer, og hvordan CSV-rader kan leses som dictionaries.
+* Jeg fikk forklart hvordan `continue` kan brukes for å hoppe over en ugyldig rad og fortsette med neste rad.
+* Jeg fikk forklart hvordan `sorted()` fungerer med `key=lambda`, slik at jeg kunne sortere uløste henvendelser etter tidsbruk.
+* Jeg fikk forklart hvordan formatering med `<` og `>` fungerer når jeg skriver tabellen til rapportfilen, for eksempel `{category:<15}` og `{count:>5}`.
+* I oppgave 4.4 fikk jeg forklart type hints i funksjonen, blant annet `list[dict[str, str | int]]` og `-> int`, og hva pilen betyr.
