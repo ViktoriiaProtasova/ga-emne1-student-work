@@ -1,0 +1,22 @@
+   ===Support Report===
+
+1. Number of valid requests: 15
+2. Category        Count
+   --------------------
+   innlogging         4
+   programvare        4
+   nettverk           2
+   utstyr             5
+3. Total time: 466 minutes
+4. Average time: 31.1 minutes
+5. Number of resolved inquiries: 9
+6. Number of unresolved inquiries: 6
+7. The most inquiries category: utstyr
+8. Unresolved inquiries sorted by time spent:
+   --------------------
+   ID: 13, Category: utstyr, Minutes: 63
+   ID: 4, Category: utstyr, Minutes: 55
+   ID: 10, Category: programvare, Minutes: 48
+   ID: 2, Category: programvare, Minutes: 42
+   ID: 17, Category: utstyr, Minutes: 39
+   ID: 7, Category: nettverk, Minutes: 35
