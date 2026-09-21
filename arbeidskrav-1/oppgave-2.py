@@ -34,10 +34,15 @@ while True:
             else:
                 break
 
-        while True:
+        is_duration_valid = False
+
+        while not is_duration_valid:
             try:
-                duration_minutes = abs(int(input("Enter duration in minutes: ")))
-                break
+                duration_minutes = int(input("Enter duration in minutes: "))
+                if duration_minutes <= 0:
+                    print("Invalid duration. Please try again.")
+                else:
+                    is_duration_valid = True
             except ValueError:
                 print("___\n")
                 print("Invalid duration. Try again.")
@@ -113,24 +118,23 @@ while True:
             print(f"Status: {session['status']}\n")
 
     elif option == "6":
-        total = 0
-        count = 0
+        if not study_sessions:
+            print("No sessions yet.\n")
+        else:
+            total = 0
+            count = 0
 
-        for session in study_sessions:
-            if not study_sessions:
-                print("No sessions yet.\n")
-
-            elif session['status'] == "completed":
+            for session in study_sessions:
+                if session['status'] == "completed":
                     total += session["duration_minutes"]
                     count += 1
-        if count > 0:
-            print("== Total and average duration for completed sessions ==")
-            print(f"Total: {total} minutes")
-            print(f"Average: {total / count:.1f} minutes\n")
-        else:
-            print("No completed sessions yet.\n")
 
-
+            if count > 0:
+                print("== Total and average duration for completed sessions ==")
+                print(f"Total: {total} minutes")
+                print(f"Average: {total / count:.1f} minutes\n")
+            else:
+                print("No completed sessions yet.\n")
 
     else:
         print("Invalid option. Try again.\n")
