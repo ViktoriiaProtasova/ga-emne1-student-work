@@ -1,3 +1,5 @@
+### Viktoriia Protasova
+
 # Oppgave 1 – Grunnleggende programflyt
 
 ## Oppgave 1.1 – Beregn tidsbruk
