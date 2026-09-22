@@ -1,3 +1,2 @@
-Python|Study|21.09.2026|60|completed
-Running|Sport|25.09.2026|30|planned
-Jogging|Travel|29.09.2026|90|planned
+Python|study|22.09.2026|60|planned
+running|sport|23.09.2026|20|completed
