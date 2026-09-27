@@ -1,6 +1,6 @@
 from pathlib import Path
 data_folder = Path(__file__).parent.parent / "data"
-path = data_folder / "messae.txt"
+path = data_folder / "message.txt"
 
 print(path)
 
@@ -9,5 +9,4 @@ try:
         message = file.read()
         print(message)
 except FileNotFoundError:
-    print(f"Error: f"
-          f"ile {path} not found.")
+    print(f"Error. File not found: {path} ")
