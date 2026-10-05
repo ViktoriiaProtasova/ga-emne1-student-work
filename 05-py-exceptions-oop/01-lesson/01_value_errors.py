@@ -7,5 +7,5 @@ while not is_input_valid:
         is_input_valid = True
     except ValueError:
         print("Error. Just integer is valid.")
-
-print(f"Next year {age + 1}")
+    else:
+        print(f"Next year {age + 1}")
