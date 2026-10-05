@@ -1,0 +1,6 @@
+passport
+clothes
+toothbrush
+phone charger
+sunglasses
+shoes

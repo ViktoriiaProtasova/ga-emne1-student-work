@@ -1,0 +1,5 @@
+Count: 5
+Total: 2435.24
+Average: 487.05
+Lowest: 295.12
+Highest: 756.75
