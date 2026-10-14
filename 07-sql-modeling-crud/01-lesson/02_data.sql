@@ -20,3 +20,18 @@ WHERE id = 1;
 
 DELETE FROM instruments
 WHERE id = 1;
+
+ALTER TABLE rooms
+ADD COLUMN capacity INT NOT NULL DEFAULT 1;
+
+ALTER TABLE rooms
+MODIFY COLUMN capacity INT NOT NULL DEFAULT 10;
+
+ALTER TABLE rooms
+DROP COLUMN capacity;
+
+CREATE TABLE scratch_notes (
+    note VARCHAR(100)
+);
+
+DROP TABLE scratch_notes;
