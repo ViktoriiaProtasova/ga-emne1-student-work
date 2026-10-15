@@ -47,8 +47,6 @@ CREATE TABLE IF NOT EXISTS scratch_labels(
     PRIMARY KEY (id)
 );
 
-DROP TABLE scratch_labels;
-
 INSERT INTO scratch_labels (title)
 VALUES ('Temporary label');
 
@@ -151,6 +149,6 @@ WHERE weight IS NULL;
 -- Difference between NULL and 0 in a numeric column (e.g. weight):
 -- NULL = weight is unknown, 0 = weight is known and equals zero.
 
-SELECT * FROM animals WHERE weight = NULL;     -- returns nothing (comparison with NULL is never true)
-SELECT * FROM animals WHERE weight IS NULL;    -- returns animals with unknown weight
-SELECT * FROM animals WHERE weight = 0;        -- returns animals whose weight is exactly 0
+-- SELECT * FROM animals WHERE weight = NULL;     -- returns nothing (comparison with NULL is never true)
+-- SELECT * FROM animals WHERE weight IS NULL;    -- returns animals with unknown weight
+-- SELECT * FROM animals WHERE weight = 0;        -- returns animals whose weight is exactly 0
