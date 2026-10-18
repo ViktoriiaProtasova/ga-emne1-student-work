@@ -6,6 +6,8 @@
 -- animals: id INT - PK, name VARCHAR(30), species VARCHAR(30), weight_kg DECIMAL(5,2), arrival_date DATE ('YYYY-MM-DD'), area_id INT NOT NULL - FK
 -- An area can have zero or more animals.
 
+-- https://drive.google.com/file/d/130zBkVWJqf1SbnHwLIdgPivuazpuyWeo/view?usp=sharing
+
 -- Task 3.1 Choose your own database
 
 CREATE DATABASE IF NOT EXISTS animal_shelter_practice;

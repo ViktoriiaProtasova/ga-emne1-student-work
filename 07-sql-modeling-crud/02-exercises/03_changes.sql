@@ -152,3 +152,64 @@ WHERE weight IS NULL;
 -- SELECT * FROM animals WHERE weight = NULL;     -- returns nothing (comparison with NULL is never true)
 -- SELECT * FROM animals WHERE weight IS NULL;    -- returns animals with unknown weight
 -- SELECT * FROM animals WHERE weight = 0;        -- returns animals whose weight is exactly 0
+
+-- Task 8.1 Remove one test record
+
+SELECT id, name
+FROM animals
+WHERE name = 'Oreo' AND species = 'cat';
+
+DELETE FROM animals
+WHERE id = 8;
+
+SELECT id, name
+FROM animals;
+
+-- Task 8.2 A section is still in use
+
+SELECT id
+FROM areas
+WHERE name = 'Small Animals';
+
+DELETE FROM areas
+WHERE id = 3;
+
+-- Cannot delete or update a parent row:
+-- a foreign key constraint fails (`animal_shelter_practice`.`animals`, CONSTRAINT `animals_ibfk_1`
+-- FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`))
+-- because the foreign key refers on the areas table where value exist
+
+SELECT id, name
+FROM animals
+WHERE area_id = 3;
+
+UPDATE animals
+SET area_id = 4
+WHERE area_id = 3;
+
+DELETE FROM areas
+WHERE id = 3;
+
+-- Task 8.3 Verify the final result
+
+SELECT COUNT(*)
+FROM areas; -- 3
+
+SELECT COUNT(*)
+FROM animals; -- 7
+
+SELECT id
+FROM areas
+WHERE name = 'Quiet Zone'; -- 4
+
+SELECT name, species
+FROM animals
+WHERE area_id = 4; -- 2 rabbits
+
+-- DELETE removes only the rows that match the WHERE condition.
+-- The table itself (its structure, columns and keys) stays, so other
+-- animals are untouched and new rows can still be inserted.
+-- DROP TABLE removes the whole table with its structure and all rows.
+-- That is far too much when the goal is only to delete Oreo, because all
+-- other animals would be lost too. For one row, use:
+-- DELETE FROM animals WHERE name = 'Oreo';
