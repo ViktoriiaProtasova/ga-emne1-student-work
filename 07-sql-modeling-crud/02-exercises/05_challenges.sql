@@ -208,3 +208,59 @@ FROM observations
 WHERE telescope_id = 2
 ORDER BY observation_date;
 
+-- Challenge 6: Explain and verify your own work
+
+-- 1. Fremmednøkkel
+
+-- FOREIGN KEY (telescope_id) REFERENCES telescopes(id)
+
+-- Hva den gjør: Hver verdi i observations.telescope_id må finnes som id i telescopes.
+-- En observasjon kan dermed ikke tilhøre et teleskop som ikke finnes.
+-- Hvordan jeg kontrollerte: Jeg prøvde DELETE FROM telescopes WHERE id = 1;.
+-- MySQL ga feilmeldingen Cannot delete or update a parent row: a foreign key constraint fails,
+-- fordi observasjoner fortsatt peker på teleskop 1. Det viser at nøkkelen fungerer.
+-- Feil jeg kunne gjort: Opprette observations før telescopes (nøkkelen peker da på en tabell som ikke finnes),
+-- eller sette inn en observasjon med telescope_id = 99.
+
+-- 2. Strukturendring
+
+-- ALTER TABLE observations
+-- ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'new';
+
+-- Hva den gjør: Legger til kolonnen status i en tabell som allerede finnes.
+-- Eksisterende rader får verdien 'new' fordi vi har satt DEFAULT.
+-- Hvordan jeg kontrollerte: SELECT id, name, status FROM animals; viser at alle rader har new.
+-- Kolonnen kan også ses i tabellstrukturen i DataGrip.
+-- Feil jeg kunne gjort: Bruke NOT NULL uten DEFAULT på en tabell med data, slik at de gamle radene mangler verdi.
+-- Eller kjøre setningen to ganger: kolonnen finnes da allerede, og det gir feil.
+
+-- 3. Dataendring
+
+-- UPDATE observations
+-- SET observation_date = '2026-10-19'
+-- WHERE id = 4;
+
+-- Hva den gjør: Endrer datoen for kun observasjonen med id = 4.
+-- Hvordan jeg kontrollerte: SELECT * FROM observations WHERE id = 4; viser den nye datoen.
+-- Feil jeg kunne gjort: Glemme WHERE, slik at datoen endres i alle rader.
+-- Derfor kjører jeg først en SELECT med samme WHERE-betingelse.
+
+-- Kjørerekkefølge for SQL-filene
+
+-- 1. Creation:        CREATE DATABASE, CREATE TABLE telescopes,
+--                     CREATE TABLE observations
+-- 2. Start data:      INSERT INTO telescopes, INSERT INTO observations
+-- 3. Later changes:   ALTER TABLE (strukturendring), UPDATE (dataendring)
+-- 4. Expected to fail: DELETE FROM telescopes WHERE id = 1
+--                     (the foreign key stops it on purpose)
+-- 5. Checks:          SELECT statements
+
+-- Tabellen telescopes må opprettes og fylles før observations, fordi fremmednøkkelen peker på rader som må finnes.
+-- Hvorfor noen setninger ikke bør kjøres flere ganger
+-- CREATE TABLE feiler andre gang, fordi tabellen allerede finnes.
+-- ALTER TABLE ... ADD COLUMN feiler andre gang, fordi kolonnen allerede finnes.
+-- INSERT feiler ikke, men legger inn de samme radene på nytt og gir duplikater.
+-- DELETE og UPDATE kan gi et annet resultat andre gang, fordi dataene allerede er endret.
+-- En UPDATE uten WHERE kan ødelegge mange rader.
+-- Derfor kjører vi filene én gang, i riktig rekkefølge.
+-- Hvis noe går galt, er det enklest å slette databasen og starte på nytt.
