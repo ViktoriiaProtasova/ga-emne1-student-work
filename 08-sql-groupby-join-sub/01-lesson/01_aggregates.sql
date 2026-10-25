@@ -36,9 +36,17 @@ SELECT SUM(Population) , COUNT(*)
 FROM country
 ORDER BY Continent, SUM(Population) DESC;
 
+
 SELECT Continent, COUNT(*) AS country_count
 FROM country
 WHERE Population > 10000000
 GROUP BY Continent
 HAVING country_count >= 5
 ORDER BY country_count;
+
+
+SELECT CountryCode, COUNT(*), AVG(Population)
+FROM city
+GROUP BY CountryCode
+HAVING COUNT(*) >= 20
+ORDER BY AVG(Population) DESC;
