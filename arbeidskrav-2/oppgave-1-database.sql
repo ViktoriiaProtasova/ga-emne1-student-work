@@ -1,4 +1,4 @@
--- Oppgave 1 – Opprett databasen og tabellene
+-- Task 1 – Create the database and the tables
 
 DROP DATABASE IF EXISTS nettbutikk;
 

@@ -1,4 +1,4 @@
--- Oppgave 2 – Legg inn eksempeldata
+-- Task 2 – Enter sample data
 
 INSERT INTO products (product_name, category, price, stock)
 VALUES ('Laptop Pro 15',  'Computers', 12999.00, 8),

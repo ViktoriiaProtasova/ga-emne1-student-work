@@ -1,4 +1,4 @@
--- Oppgave 3 – SELECT og utforsking av data
+-- Task 3 – SELECT and data exploration
 
 -- 1. Product Overview:
 
@@ -210,5 +210,35 @@ ORDER BY last_name;
 -- A subquery then finds the highest of these totals using MAX.
 -- In the main query, HAVING keeps every customer whose total equals this highest value.
 -- This way, if several customers have the same highest total, all of them are shown instead of only one.
+
+
+-- Task 4 – INSERT, UPDATE, DELETE, and transactions
+
+-- 1. Register a new customer:
+
+INSERT INTO customers (first_name, last_name, email, city, registered_date)
+VALUES ('Henrik', 'Solberg','henrik.solberg@example.com','Lillehammer', '2026-10-26');
+
+SELECT first_name, last_name
+FROM customers
+WHERE email = 'henrik.solberg@example.com';
+
+-- 2. Register multiple products:
+
+INSERT INTO products (product_name, category, price, stock)
+VALUES ('USB-C cable', 'Accessories', 199.00, 50),
+       ('Docking station', 'Accessories', 1899.00, 12),
+       ('External SSD 2TB', 'Storage', 1999.00, 8);
+
+SELECT product_name
+FROM products
+WHERE product_name IN ('USB-C cable', 'Docking station', 'External SSD 2TB');
+
+-- 3. Register new orders:
+
+SELECT customers.customer_id, products.product_id
+FROM customers
+JOIN products ON
+
 
 
