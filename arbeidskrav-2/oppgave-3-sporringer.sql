@@ -236,9 +236,83 @@ WHERE product_name IN ('USB-C cable', 'Docking station', 'External SSD 2TB');
 
 -- 3. Register new orders:
 
-SELECT customers.customer_id, products.product_id
-FROM customers
-JOIN products ON
+INSERT INTO orders (customer_id, product_id, quantity, order_date, status)
+VALUES ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'Docking station'), 1, '2026-10-26', 'Processing'),
+       ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'USB-C cable'), 2, '2026-10-26', 'Processing'),
+       ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'External SSD 2TB'), 1, '2026-10-26', 'Processing');
+
+SELECT first_name, last_name, product_name
+FROM orders
+JOIN customers ON orders.customer_id = customers.customer_id
+JOIN products ON orders.product_id = products.product_id
+WHERE order_date = '2026-10-26';
+
+
+-- 4. Price change:
+
+SELECT product_id, product_name, price, price * 1.08 AS new_price
+FROM products
+WHERE category = 'Accessories';
+
+UPDATE products
+SET price = ROUND((price * 1.08), 2)
+WHERE category = 'Accessories';
+
+SELECT product_id, product_name, price
+FROM products
+WHERE category = 'Accessories';
+
+
+-- 5. Stock replenishment:
+
+SELECT product_id, product_name, stock
+FROM products
+WHERE stock < 15;
+
+UPDATE products
+SET stock = stock + 20
+WHERE stock < 15;
+
+SELECT COUNT(product_id) AS product_count
+FROM products
+WHERE stock < 15;
+
+
+-- 6. Modify multiple values:
+
+SELECT product_name, price, price * 1.15 AS new_price, stock, stock + 10 AS new_stock
+FROM products
+WHERE product_name = 'Gaming headset';
+
+UPDATE products
+SET price = ROUND((price * 1.15), 2),
+    stock = stock + 10
+WHERE product_name = 'Gaming headset';
+
+SELECT product_name, price, stock
+FROM products
+WHERE product_name = 'Gaming headset';
+
+
+-- 7. Update order status:
+
+SELECT order_id, order_date, status
+FROM orders
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+UPDATE orders
+SET status = 'Delivered'
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+SELECT order_id, order_date, status
+FROM orders
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+
+-- 8. Create and delete test data:
 
 
 
