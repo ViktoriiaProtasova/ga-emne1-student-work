@@ -314,5 +314,190 @@ WHERE status = 'Shipped' AND order_date < '2025-08-10';
 
 -- 8. Create and delete test data:
 
+-- Task 4 – INSERT, UPDATE, DELETE, and transactions
+
+-- 1. Register a new customer:
+
+INSERT INTO customers (first_name, last_name, email, city, registered_date)
+VALUES ('Henrik', 'Solberg','henrik.solberg@example.com','Lillehammer', '2026-10-26');
+
+SELECT first_name, last_name
+FROM customers
+WHERE email = 'henrik.solberg@example.com';
+
+-- 2. Register multiple products:
+
+INSERT INTO products (product_name, category, price, stock)
+VALUES ('USB-C cable', 'Accessories', 199.00, 50),
+       ('Docking station', 'Accessories', 1899.00, 12),
+       ('External SSD 2TB', 'Storage', 1999.00, 8);
+
+SELECT product_name
+FROM products
+WHERE product_name IN ('USB-C cable', 'Docking station', 'External SSD 2TB');
+
+-- 3. Register new orders:
+
+INSERT INTO orders (customer_id, product_id, quantity, order_date, status)
+VALUES ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'Docking station'), 1, '2026-10-26', 'Processing'),
+       ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'USB-C cable'), 2, '2026-10-26', 'Processing'),
+       ((SELECT customer_id FROM customers WHERE email = 'henrik.solberg@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'External SSD 2TB'), 1, '2026-10-26', 'Processing');
+
+SELECT first_name, last_name, product_name
+FROM orders
+JOIN customers ON orders.customer_id = customers.customer_id
+JOIN products ON orders.product_id = products.product_id
+WHERE order_date = '2026-10-26';
+
+
+-- 4. Price change:
+
+SELECT product_id, product_name, price, price * 1.08 AS new_price
+FROM products
+WHERE category = 'Accessories';
+
+UPDATE products
+SET price = ROUND((price * 1.08), 2)
+WHERE category = 'Accessories';
+
+SELECT product_id, product_name, price
+FROM products
+WHERE category = 'Accessories';
+
+
+-- 5. Stock replenishment:
+
+SELECT product_id, product_name, stock
+FROM products
+WHERE stock < 15;
+
+UPDATE products
+SET stock = stock + 20
+WHERE stock < 15;
+
+SELECT COUNT(product_id) AS product_count
+FROM products
+WHERE stock < 15;
+
+
+-- 6. Modify multiple values:
+
+SELECT product_name, price, price * 1.15 AS new_price, stock, stock + 10 AS new_stock
+FROM products
+WHERE product_name = 'Gaming headset';
+
+UPDATE products
+SET price = ROUND((price * 1.15), 2),
+    stock = stock + 10
+WHERE product_name = 'Gaming headset';
+
+SELECT product_name, price, stock
+FROM products
+WHERE product_name = 'Gaming headset';
+
+
+-- 7. Update order status:
+
+SELECT order_id, order_date, status
+FROM orders
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+UPDATE orders
+SET status = 'Delivered'
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+SELECT order_id, order_date, status
+FROM orders
+WHERE status = 'Shipped' AND order_date < '2025-08-10';
+
+
+-- 8. Create and delete test data:
+
+INSERT INTO customers (first_name, last_name, email, city, registered_date)
+VALUES ('test_first_name', 'test_last_name', 'test@example.com', 'Oslo', '2026-10-31');
+
+INSERT INTO products (product_name, category, price, stock)
+VALUES ('Test_product', 'Test_category', 99.90, 10);
+
+INSERT INTO orders (customer_id, product_id, quantity, order_date, status)
+VALUES ((SELECT customer_id FROM customers WHERE email = 'test@example.com'),
+        (SELECT product_id FROM products WHERE product_name = 'Test_product'),
+        1, '2026-10-31', 'Processing');
+
+SELECT first_name, last_name, product_name, order_id, order_date, quantity, status
+FROM customers
+JOIN orders ON customers.customer_id = orders.customer_id
+JOIN products ON products.product_id = orders.product_id
+WHERE product_name = 'Test_product';
+
+DELETE FROM orders
+WHERE customer_id = (SELECT customer_id FROM customers WHERE email = 'test@example.com');
+
+DELETE FROM products
+WHERE product_name = 'Test_product';
+
+DELETE FROM customers
+WHERE email = 'test@example.com';
+
+SELECT first_name, last_name
+FROM customers
+WHERE email ='test@example.com';
+
+SELECT product_name
+FROM products
+WHERE product_name = 'Test_product';
+
+-- I delete the test data in this order: first the order in orders,
+-- then the test customer in customers and the test product in products (the last two can go in either order).
+
+-- The reason is that orders has foreign keys to both customers and products.
+-- The foreign keys protect referential integrity.
+-- MySQL does not allow deleting a customer or product that is still referenced by an order,
+-- because the order would then point to something that no longer exists.
+-- If I try to delete the customer first, MySQL returns a foreign key constraint error.
+-- So I must delete the “child” row (the order) before the “parent” rows (the customer and product).
+
+-- The order of creation is the opposite: parent rows (customers, products) first, then orders.
+
+
+-- 9. Use a transaction:
+
+START TRANSACTION;
+
+INSERT INTO orders(customer_id, product_id, quantity, order_date, status)
+VALUES (1,1,2, '2026-10-31', 'Processing');
+
+UPDATE products
+SET stock = stock - (SELECT quantity FROM orders WHERE order_id = LAST_INSERT_ID())
+WHERE product_id = (SELECT product_id FROM orders WHERE order_id = LAST_INSERT_ID());
+
+SELECT first_name, last_name, product_name, order_id, order_date, quantity, status, stock
+FROM customers
+         JOIN orders ON customers.customer_id = orders.customer_id
+         JOIN products ON products.product_id = orders.product_id
+WHERE order_id = LAST_INSERT_ID();
+
+COMMIT;
+
+-- What would ROLLBACK do instead of COMMIT?
+-- If I used ROLLBACK instead of COMMIT, all changes made inside the transaction would be undone.
+-- The new order would not exist in orders, and the stock of the product would stay at its original value,
+-- as if nothing had happened.
+
+-- What would happen without a transaction?
+-- If the INSERT succeeded but the UPDATE failed, the order would be registered,
+-- but the stock would not be reduced.
+-- The database would then be inconsistent: it would show more items in stock than actually exist.
+
+-- Why are transactions useful?
+-- Transactions are useful when several changes belong together,
+-- because they follow the ACID principles of relational databases, especially atomicity.
+-- Atomicity means that either the whole transaction is carried out or none of it is.
+-- It cannot happen that the INSERT is saved while the following UPDATE is not. A transaction guarantees this.
+
+
 
 
