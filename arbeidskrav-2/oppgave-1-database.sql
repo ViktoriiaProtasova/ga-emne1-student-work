@@ -1,5 +1,7 @@
 -- Task 1 – Create the database and the tables
 
+-- https://drive.google.com/file/d/10_mQkYRr9MrKc_qViExoZRrOKL9nW-3C/view?usp=sharing
+
 DROP DATABASE IF EXISTS nettbutikk;
 
 CREATE DATABASE nettbutikk;
