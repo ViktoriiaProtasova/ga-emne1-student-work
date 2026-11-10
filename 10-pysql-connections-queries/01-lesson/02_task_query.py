@@ -26,3 +26,4 @@ try:
                     print(f"{name}: {head_of_state}")
 except Error as e:
     print(f"Error using MySQL: {e}")
+

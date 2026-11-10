@@ -21,7 +21,7 @@ try:
         name VARCHAR(100) NOT NULL,
         price DECIMAL(10,2),
         stock INT
-    )
+    );
 """
             cursor.execute(sql_table)
 
