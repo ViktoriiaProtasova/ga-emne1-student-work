@@ -20,7 +20,7 @@ try:
             cursor.execute(sql)
             rows = cursor.fetchall()
             if not rows:
-                print("No cities found.")
+                print("No countries found.")
             else:
                 for language, percentage in rows:
                     print(f"{language}: {percentage}%")
