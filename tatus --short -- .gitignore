@@ -1,0 +1,17 @@
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex d3d8ad5..8f23157 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -1,4 +1,9 @@[m
+ .idea/[m
+ .venv/[m
+ __pycache__/[m
+[31m-*.pyc[m
+\ No newline at end of file[m
+[32m+[m[32m*.pyc[m
+[32m+[m
+[32m+[m[32m/11-pysql-flask/01-lesson/config_local.py[m
+[32m+[m
+[32m+[m[32m# Shared template: do not ignore[m
+[32m+[m[32m# config_local.py.example[m
+\ No newline at end of file[m
