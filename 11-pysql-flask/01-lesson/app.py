@@ -1,6 +1,5 @@
 from flask import Flask, request
 from flask import render_template
-from flask import request
 from mysql.connector import Error
 
 from database import get_cities
