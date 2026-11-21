@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 
 /11-pysql-flask/01-lesson/config_local.py
+/11-pysql-flask/02-exercises/config_local.py
 
 # Shared template: do not ignore
 # config_local.py.example
