@@ -24,8 +24,11 @@
 
         <h1>Cities in {{ code }}</h1>
         <ul>
-            {% for name, population in rows %}
-            <li>{{ name }}: {{ population }}</li>
+            {% for id, name, population in rows %}
+            <li>
+                <a href="/city/{{ id }}">{{ name }}</a>
+                : {{ population }}
+            </li>
             {% else %}
             <li>No cities found.</li>
             {% endfor %}
