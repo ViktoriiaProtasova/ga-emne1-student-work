@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <form
+            method="post"
+            action="{{ '/edit/' ~ city_id if city_id else '/add' }}"
+        >
+            <label for="name">
+                City name ({%if city_id%} ID {{city_id}} {%else%} ID 0 {% endif
+                %})
+            </label>
+            <input
+                style="display: block; width: 200px; margin-bottom: 10px"
+                type="text"
+                id="name"
+                name="name"
+                value="{{ name }}"
+                maxlength="35"
+                required
+            />
+            <label for="country_code">Country code</label>
+            <input
+                style="display: block; width: 200px; margin-bottom: 10px"
+                type="text"
+                id="country_code"
+                name="country_code"
+                value="{{ country_code }}"
+                maxlength="3"
+                required
+            />
+            <label for="district">District</label>
+            <input
+                style="display: block; width: 200px; margin-bottom: 10px"
+                type="text"
+                id="district"
+                name="district"
+                value="{{ district }}"
+                maxlength="20"
+            />
+            <label for="population">Population</label>
+            <input
+                style="display: block; width: 200px; margin-bottom: 10px"
+                type="number"
+                id="population"
+                name="population"
+                min="0"
+                value="{{ population }}"
+                required
+            />
+            <p><b>Warning! Changes made here will affect the database.</b></p>
+            <p>
+                <button
+                    type="submit"
+                    style="display: block; width: 100px; margin-bottom: 10px"
+                >
+                    Save city
+                </button>
+            </p>
+        </form>
+        <!-- If existing city, add delete button-->
+        {% if city_id %}
+        <form method="post" action="/delete/{{ city_id }}">
+            <button
+                type="submit"
+                style="display: block; width: 100px; margin-bottom: 10px"
+            >
+                Delete city
+            </button>
+        </form>
+        {% endif %}
+        <p><a href="/">Home</a></p>
+    </body>
+</html>
