@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect
 from mysql.connector import Error
 
 import database
+from models import City
 
 # from database import *
 
@@ -67,69 +68,91 @@ def add_city():
 
     # Uses POST to store city data in DB:
 
-    name = request.form.get("name", "").strip()
-    if not name or len(name) > 35:
-        return "Invalid city name", 400
-
-    country_code = request.form.get("country_code", "").strip().upper()
-
-    if (
-        len(country_code) != 3
-        or not country_code.isascii()
-        or not country_code.isalpha()
-        or not database.country_exists(country_code)
-    ):
-        return "Invalid Country code", 400
-
-    district = request.form.get("district", "").strip()
-
-    if len(district) > 20:
-        return "Invalid district", 400
-
-    population = request.form.get("population", "")
+    form = request.form
+    errors = {}
+    data = {}
 
     try:
-        population = int(population)
-    except ValueError:
-        return "Invalid population", 400
-    if population < 0:
-        return "Invalid population", 400
+        data["name"] = City.clean_name(form.get("name", ""))
+    except ValueError as error:
+        errors["name"] = str(error)
 
-    database.insert_city(name, country_code, district, population)
-    return redirect(f"/cities?country={country_code}", code=303)
+    try:
+        data["country_code"] = City.clean_country_code(
+            form.get("country_code", "")
+        )
+
+        if not database.country_exists(data["country_code"]):
+            raise ValueError("Country code does not exist.")
+
+    except ValueError as error:
+        errors["country_code"] = str(error)
+
+    try:
+        data["district"] = City.clean_district(form.get("district", ""))
+    except ValueError as error:
+        errors["district"] = str(error)
+
+    try:
+        data["population"] = City.clean_population(form.get("population", ""))
+    except ValueError as error:
+        errors["population"] = str(error)
+
+    if errors:
+        return (
+            render_template(
+                "city_form.html", **form, city_id=None, errors=errors
+            ),
+            400,
+        )
+
+    database.insert_city(**data)
+    return redirect(f"/cities?country={data['country_code']}", code=303)
 
 
 @app.route("/edit/<int:city_id>", methods=["POST"])
 def edit_city(city_id):
-    name = request.form.get("name", "").strip()
-    if not name or len(name) > 35:
-        return "Invalid city name", 400
 
-    country_code = request.form.get("country_code", "").strip().upper()
-
-    if (
-        len(country_code) != 3
-        or not country_code.isascii()
-        or not country_code.isalpha()
-        or not database.country_exists(country_code)
-    ):
-        return "Invalid Country code", 400
-
-    district = request.form.get("district", "").strip()
-    if len(district) > 20:
-        return "Invalid district", 400
-
-    population = request.form.get("population", "")
+    form = request.form
+    errors = {}
+    data = {}
 
     try:
-        population = int(population)
-    except ValueError:
-        return "Invalid population", 400
-    if population < 0:
-        return "Invalid population", 400
+        data["name"] = City.clean_name(form.get("name", ""))
+    except ValueError as error:
+        errors["name"] = str(error)
 
-    database.update_city(city_id, name, country_code, district, population)
-    return redirect(f"/cities?country={country_code}", code=303)
+    try:
+        data["country_code"] = City.clean_country_code(
+            form.get("country_code", "")
+        )
+
+        if not database.country_exists(data["country_code"]):
+            raise ValueError("Country code does not exist.")
+
+    except ValueError as error:
+        errors["country_code"] = str(error)
+
+    try:
+        data["district"] = City.clean_district(form.get("district", ""))
+    except ValueError as error:
+        errors["district"] = str(error)
+
+    try:
+        data["population"] = City.clean_population(form.get("population", ""))
+    except ValueError as error:
+        errors["population"] = str(error)
+
+    if errors:
+        return (
+            render_template(
+                "city_form.html", **form, city_id=city_id, errors=errors
+            ),
+            400,
+        )
+
+    database.update_city(city_id, **data)
+    return redirect(f"/cities?country={data['country_code']}", code=303)
 
 
 @app.route("/delete/<int:city_id>", methods=["POST"])

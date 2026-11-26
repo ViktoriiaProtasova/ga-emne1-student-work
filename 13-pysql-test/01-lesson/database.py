@@ -5,10 +5,10 @@ from models import City
 
 def get_cities(code):
     sql = (
-        "SELECT ID, Name, Population "
-        "FROM city "
+        "SELECT ID, city.Name AS CityName, country.Name AS CountryName, city.Population AS CityPopulation "
+        "FROM city JOIN country ON country.Code = city.CountryCode "
         "WHERE CountryCode = %s "
-        "ORDER BY Name"
+        "ORDER BY city.Name, city.ID;"
     )
     with mysql.connector.connect(**DB_CONFIG) as connection:
         with connection.cursor() as cursor:

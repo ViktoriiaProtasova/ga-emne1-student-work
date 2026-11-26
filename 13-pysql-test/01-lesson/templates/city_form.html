@@ -27,6 +27,18 @@
                 maxlength="35"
                 required
             />
+            {% if errors and errors.get("name") %}
+            <p
+                style="
+                    color: red;
+                    font-size: 14px;
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                "
+            >
+                {{ errors.name }}
+            </p>
+            {% endif %}
             <label for="country_code">Country code</label>
             <input
                 style="display: block; width: 200px; margin-bottom: 10px"
@@ -37,6 +49,18 @@
                 maxlength="3"
                 required
             />
+            {% if errors and errors.get("country_code") %}
+            <p
+                style="
+                    color: red;
+                    font-size: 14px;
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                "
+            >
+                {{ errors.country_code }}
+            </p>
+            {% endif %}
             <label for="district">District</label>
             <input
                 style="display: block; width: 200px; margin-bottom: 10px"
@@ -46,6 +70,18 @@
                 value="{{ district }}"
                 maxlength="20"
             />
+            {% if errors and errors.get("district") %}
+            <p
+                style="
+                    color: red;
+                    font-size: 14px;
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                "
+            >
+                {{ errors.district }}
+            </p>
+            {% endif %}
             <label for="population">Population</label>
             <input
                 style="display: block; width: 200px; margin-bottom: 10px"
@@ -56,6 +92,18 @@
                 value="{{ population }}"
                 required
             />
+            {% if errors and errors.get("population") %}
+            <p
+                style="
+                    color: red;
+                    font-size: 14px;
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                "
+            >
+                {{ errors.population }}
+            </p>
+            {% endif %}
             <p><b>Warning! Changes made here will affect the database.</b></p>
             <p>
                 <button

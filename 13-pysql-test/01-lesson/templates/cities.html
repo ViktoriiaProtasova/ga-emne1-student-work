@@ -24,10 +24,10 @@
 
         <h1>Cities in {{ code }}</h1>
         <ul>
-            {% for id, name, population in rows %}
+            {% for id, name, country, population in rows %}
             <li>
                 <a href="/city/{{ id }}">{{ name }}</a>
-                : {{ population }}
+                : {{ population }} ({{country}})
             </li>
             {% else %}
             <li>No cities found.</li>
